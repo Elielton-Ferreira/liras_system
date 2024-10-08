@@ -7,11 +7,17 @@ app = Flask(__name__)  # Cria uma instância da aplicação Flask
 def conectar_bd():
     return sqlite3.connect('estoque.db')  # Retorna uma conexão com o banco de dados 'estoque.db'
 
-# Função para obter todos os produtos do banco de dados
-def obter_produtos():
+# Função para obter produtos com filtro de pesquisa
+def obter_produtos(pesquisa=None):
     conn = conectar_bd()  # Conecta ao banco de dados
     cursor = conn.cursor()  # Cria um cursor para executar comandos SQL
-    cursor.execute("SELECT id, nome, categoria, quantidade, preco, estoque_minimo FROM produtos")  # Executa a consulta para selecionar todos os produtos
+    
+    # Se uma pesquisa for fornecida, filtra os produtos
+    if pesquisa:
+        cursor.execute("SELECT id, nome, categoria, quantidade, preco, estoque_minimo FROM produtos WHERE nome LIKE ?", (f'%{pesquisa}%',))
+    else:
+        cursor.execute("SELECT id, nome, categoria, quantidade, preco, estoque_minimo FROM produtos")  # Seleciona todos os produtos
+    
     produtos = cursor.fetchall()  # Obtém todos os resultados da consulta
     conn.close()  # Fecha a conexão com o banco de dados
     return produtos  # Retorna a lista de produtos
@@ -35,9 +41,12 @@ def atualizar_estoque(produto_id, quantidade, estoque_minimo):
     conn.close()  # Fecha a conexão com o banco de dados
 
 # Página inicial que exibe a lista de produtos e a opção de adicionar e editar produtos
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])  # Aceita tanto GET quanto POST
 def index():
-    produtos = obter_produtos()  # Obtém a lista de produtos
+    pesquisa = None  # Inicializa a variável de pesquisa
+    if request.method == 'POST':  # Se o método da requisição for POST
+        pesquisa = request.form.get('pesquisa')  # Obtém o parâmetro de pesquisa do formulário
+    produtos = obter_produtos(pesquisa)  # Obtém os produtos, filtrando se necessário
     return render_template('index.html', produtos=produtos)  # Renderiza o template 'index.html' passando a lista de produtos
 
 # Rota para exibir o formulário de adicionar produto (GET) e adicionar o produto (POST)
