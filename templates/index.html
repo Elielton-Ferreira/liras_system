@@ -1,34 +1,34 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} <!-- Estende o template base para manter a estrutura comum -->
 
-{% block content %}
-<h1 class="my-4">Estoque Vidraçaria Lira's</h1>
+{% block content %} <!-- Início do bloco de conteúdo -->
+<h1 class="my-4">Estoque Vidraçaria Lira's</h1> <!-- Título da página, indicando que é sobre o estoque -->
 
-<table class="table table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Categoria</th>
-            <th>Quantidade</th>
-            <th>Preço</th>
-            <th>Estoque Mínimo</th>
-            <th>Ações</th>
+<table class="table table-bordered"> <!-- Início da tabela com bordas -->
+    <thead class="thead-dark"> <!-- Cabeçalho da tabela com fundo escuro -->
+        <tr> <!-- Linha do cabeçalho -->
+            <th>ID</th> <!-- Coluna para ID do produto -->
+            <th>Nome</th> <!-- Coluna para nome do produto -->
+            <th>Categoria</th> <!-- Coluna para categoria do produto -->
+            <th>Quantidade</th> <!-- Coluna para quantidade em estoque -->
+            <th>Preço</th> <!-- Coluna para preço do produto -->
+            <th>Estoque Mínimo</th> <!-- Coluna para estoque mínimo do produto -->
+            <th>Ações</th> <!-- Coluna para ações, como editar -->
         </tr>
     </thead>
-    <tbody>
-        {% for produto in produtos %}
-        <tr {% if produto[3] < produto[5] %}class="table-danger"{% endif %}>
-            <td>{{ produto[0] }}</td>
-            <td>{{ produto[1] }}</td>
-            <td>{{ produto[2] }}</td>
-            <td>{{ produto[3] }}</td>
-            <td>R$ {{ produto[4] }}</td>
-            <td>{{ produto[5] }}</td>
-            <td><a href="/editar/{{ produto[0] }}" class="btn btn-sm btn-warning">Editar Estoque</a></td>
+    <tbody> <!-- Início do corpo da tabela -->
+        {% for produto in produtos %} <!-- Loop sobre a lista de produtos -->
+        <tr {% if produto[3] < produto[5] %}class="table-danger"{% endif %}> <!-- Linha do produto, com classe 'table-danger' se a quantidade for menor que o estoque mínimo -->
+            <td>{{ produto[0] }}</td> <!-- Célula com o ID do produto -->
+            <td>{{ produto[1] }}</td> <!-- Célula com o nome do produto -->
+            <td>{{ produto[2] }}</td> <!-- Célula com a categoria do produto -->
+            <td>{{ produto[3] }}</td> <!-- Célula com a quantidade do produto -->
+            <td>R$ {{ produto[4] }}</td> <!-- Célula com o preço do produto formatado em Reais -->
+            <td>{{ produto[5] }}</td> <!-- Célula com o estoque mínimo do produto -->
+            <td><a href="/editar/{{ produto[0] }}" class="btn btn-sm btn-warning">Editar Estoque</a></td> <!-- Link para editar o estoque do produto, usando o ID do produto na URL -->
         </tr>
-        {% endfor %}
+        {% endfor %} <!-- Fim do loop -->
     </tbody>
 </table>
 
-<a href="/adicionar" class="btn btn-success mt-4">Adicionar Produto</a>
-{% endblock %}
+<a href="/adicionar" class="btn btn-success mt-4">Adicionar Produto</a> <!-- Botão para adicionar um novo produto -->
+{% endblock %} <!-- Fim do bloco de conteúdo -->

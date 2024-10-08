@@ -1,34 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} <!-- Estende o template base para manter a estrutura comum -->
 
-{% block content %}
-<h1 class="my-4">Adicionar Produto</h1>
-<form method="POST">
-    <div class="form-group">
-        <label for="nome">Nome do Produto</label>
-        <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome do produto" required>
+{% block content %} <!-- Início do bloco de conteúdo -->
+<h1 class="my-4">Adicionar Produto</h1> <!-- Título da página -->
+
+<form method="POST"> <!-- Início do formulário, usando o método POST para enviar dados -->
+    <div class="form-group"> <!-- Grupo de formulário para o nome do produto -->
+        <label for="nome">Nome do Produto</label> <!-- Rótulo do campo -->
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome do produto" required> <!-- Campo de entrada para o nome do produto, obrigatório -->
     </div>
 
-    <div class="form-group">
-        <label for="categoria">Categoria</label>
-        <input type="text" class="form-control" id="categoria" name="categoria" placeholder="Digite a categoria do produto" required>
+    <div class="form-group"> <!-- Grupo de formulário para a categoria -->
+        <label for="categoria">Categoria</label> <!-- Rótulo do campo -->
+        <input type="text" class="form-control" id="categoria" name="categoria" placeholder="Digite a categoria do produto" required> <!-- Campo de entrada para a categoria, obrigatório -->
     </div>
 
-    <div class="form-group">
-        <label for="quantidade">Quantidade</label>
-        <input type="number" class="form-control" id="quantidade" name="quantidade" placeholder="Digite a quantidade" required>
+    <div class="form-group"> <!-- Grupo de formulário para a quantidade -->
+        <label for="quantidade">Quantidade</label> <!-- Rótulo do campo -->
+        <input type="number" class="form-control" id="quantidade" name="quantidade" placeholder="Digite a quantidade" required> <!-- Campo de entrada numérico para a quantidade, obrigatório -->
     </div>
 
-    <div class="form-group">
-        <label for="preco">Preço</label>
-        <input type="number" step="0.01" class="form-control" id="preco" name="preco" placeholder="Digite o preço" required>
+    <div class="form-group"> <!-- Grupo de formulário para o preço -->
+        <label for="preco">Preço</label> <!-- Rótulo do campo -->
+        <input type="number" step="0.01" class="form-control" id="preco" name="preco" placeholder="Digite o preço" required> <!-- Campo de entrada numérico para o preço, obrigatório e aceita casas decimais -->
     </div>
 
-    <div class="form-group">
-        <label for="estoque_minimo">Estoque Mínimo</label>
-        <input type="number" class="form-control" id="estoque_minimo" name="estoque_minimo" placeholder="Digite o estoque mínimo" required>
+    <div class="form-group"> <!-- Grupo de formulário para o estoque mínimo -->
+        <label for="estoque_minimo">Estoque Mínimo</label> <!-- Rótulo do campo -->
+        <input type="number" class="form-control" id="estoque_minimo" name="estoque_minimo" placeholder="Digite o estoque mínimo" required> <!-- Campo de entrada numérico para o estoque mínimo, obrigatório -->
     </div>
 
-    <button type="submit" class="btn btn-primary">Adicionar Produto</button>
-    <a href="/" class="btn btn-secondary ml-2">Voltar</a>
+    <button type="submit" class="btn btn-primary">Adicionar Produto</button> <!-- Botão para submeter o formulário -->
+    <a href="/" class="btn btn-secondary ml-2">Voltar</a> <!-- Botão para voltar à página inicial -->
 </form>
-{% endblock %}
+{% endblock %} <!-- Fim do bloco de conteúdo -->

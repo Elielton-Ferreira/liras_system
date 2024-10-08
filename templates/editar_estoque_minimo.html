@@ -1,13 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} <!-- Estende o template base para manter a estrutura comum -->
 
-{% block content %}
-<h1>Editar Estoque Mínimo do Produto</h1>
-<form method="POST" class="form-editar-estoque">
-    <div class="form-group">
-        <label for="estoque_minimo">Novo Estoque Mínimo:</label>
-        <input type="number" name="estoque_minimo" class="form-control" required>
+{% block content %} <!-- Início do bloco de conteúdo -->
+<h1>Editar Estoque Mínimo do Produto</h1> <!-- Título da página, indicando que é para editar o estoque mínimo -->
+
+<form method="POST" class="form-editar-estoque"> <!-- Início do formulário, enviando dados via método POST -->
+    <div class="form-group"> <!-- Grupo de formulário para o estoque mínimo -->
+        <label for="estoque_minimo">Novo Estoque Mínimo:</label> <!-- Rótulo do campo -->
+        <input type="number" name="estoque_minimo" class="form-control" required> <!-- Campo de entrada numérico para o novo estoque mínimo, obrigatório -->
     </div>
-    <button type="submit" class="btn btn-primary">Salvar</button>
-    <a href="/" class="btn btn-secondary">Voltar</a>
+    <button type="submit" class="btn btn-primary">Salvar</button> <!-- Botão para submeter o formulário e salvar o novo estoque mínimo -->
+    <a href="/" class="btn btn-secondary">Voltar</a> <!-- Botão para voltar à página inicial -->
 </form>
-{% endblock %}
+{% endblock %} <!-- Fim do bloco de conteúdo -->
