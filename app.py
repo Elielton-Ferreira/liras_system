@@ -3,16 +3,16 @@ import sqlite3
 
 app = Flask(__name__)
 
-# Função para conectar ao banco de dados
+# Função para conectar ao banco de dados SQLite
 def conectar_bd():
-    conn = sqlite3.connect('estoque.db')  # Altere para o nome do seu banco de dados
-    conn.row_factory = sqlite3.Row  # Para acessar os dados por nome de coluna
+    conn = sqlite3.connect('estoque.db')  # Conecta ao banco de dados estoque.db
+    conn.row_factory = sqlite3.Row  # Permite acessar as colunas pelo nome
     return conn
 
 # Rota principal que exibe todos os produtos
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    conn = conectar_bd()
+    conn = conectar_bd()  # Conecta ao banco de dados
     cursor = conn.cursor()
 
     # Se houver uma solicitação POST, realiza a pesquisa
@@ -27,10 +27,35 @@ def index():
     conn.close()  # Fecha a conexão
     return render_template('index.html', produtos=produtos)  # Renderiza o template com a lista de produtos
 
+# Rota para exibir o formulário de adicionar produto
+@app.route('/adicionar', methods=['GET', 'POST'])
+def adicionar_produto():
+    if request.method == 'POST':
+        # Obtém os dados do formulário
+        nome = request.form['nome']
+        categoria = request.form['categoria']
+        quantidade = request.form['quantidade']
+        preco = request.form['preco']
+        estoque_minimo = request.form['estoque_minimo']
+
+        conn = conectar_bd()  # Conecta ao banco de dados
+        cursor = conn.cursor()
+        # Insere o novo produto no banco de dados
+        cursor.execute("""
+            INSERT INTO produtos (nome, categoria, quantidade, preco, estoque_minimo)
+            VALUES (?, ?, ?, ?, ?)
+        """, (nome, categoria, quantidade, preco, estoque_minimo))
+        conn.commit()  # Confirma as alterações
+        conn.close()  # Fecha a conexão
+
+        return redirect(url_for('index'))  # Redireciona para a página inicial
+
+    return render_template('adicionar_produto.html')  # Renderiza o formulário de adicionar produto
+
 # Rota para exibir o formulário de edição de estoque
 @app.route('/editar/<int:id>', methods=['GET'])
 def editar(id):
-    conn = conectar_bd()
+    conn = conectar_bd()  # Conecta ao banco de dados
     cursor = conn.cursor()
 
     # Obtém o produto a ser editado
@@ -53,14 +78,26 @@ def atualizar(id):
     estoque_minimo = request.form['estoque_minimo']
     preco = request.form['preco']
 
-    conn = conectar_bd()
+    conn = conectar_bd()  # Conecta ao banco de dados
     cursor = conn.cursor()
     # Atualiza o produto no banco de dados
     cursor.execute("""
         UPDATE produtos
-        SET quantidade = ?, estoque_minimo = ?, preco = ?
+        SET nome = ?, quantidade = ?, estoque_minimo = ?, preco = ?
         WHERE id = ?
-    """, (quantidade, estoque_minimo, preco, id))
+    """, (nome, quantidade, estoque_minimo, preco, id))
+    conn.commit()  # Confirma as alterações
+    conn.close()  # Fecha a conexão
+
+    return redirect(url_for('index'))  # Redireciona para a página inicial
+
+# Rota para excluir um produto
+@app.route('/excluir/<int:id>', methods=['POST'])
+def excluir(id):
+    conn = conectar_bd()  # Conecta ao banco de dados
+    cursor = conn.cursor()
+    # Exclui o produto do banco de dados
+    cursor.execute("DELETE FROM produtos WHERE id = ?", (id,))
     conn.commit()  # Confirma as alterações
     conn.close()  # Fecha a conexão
 
@@ -68,4 +105,4 @@ def atualizar(id):
 
 # Executa o aplicativo Flask
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)  # Executa o servidor em modo de depuração
