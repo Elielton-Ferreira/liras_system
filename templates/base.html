@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Estoque</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
         body {
             background-color: #f8f9fa;
@@ -15,11 +16,32 @@
         .red {
             color: red;
         }
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
+        <h1>Controle de Estoque</h1>
+    </div>
+    <div class="container mt-4">
         {% block content %}{% endblock %}
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Seu Nome - Todos os direitos reservados.</p>
     </div>
 </body>
 </html>

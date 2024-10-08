@@ -1,0 +1,45 @@
+body {
+    background-color: #2e2e2e; /* Cor de fundo da página */
+    color: white; /* Cor do texto */
+}
+
+.sidebar {
+    background-color: black; /* Cor de fundo da barra lateral */
+    padding: 15px; /* Espaçamento interno da barra lateral */
+    height: 100vh; /* Altura total da janela */
+    width: 200px; /* Largura da barra lateral */
+    float: left; /* Para deixar a barra lateral à esquerda */
+}
+
+.sidebar .nav-link {
+    color: white; /* Cor do texto dos links */
+    padding: 10px; /* Espaçamento dos links */
+    text-decoration: none; /* Remove sublinhado */
+    display: block; /* Cada link ocupa uma linha inteira */
+    transition: background-color 0.3s, color 0.3s; /* Transição suave */
+}
+
+.sidebar .nav-link:hover {
+    background-color: yellow; /* Cor de fundo ao passar o mouse */
+    color: black; /* Cor do texto ao passar o mouse */
+}
+
+.content {
+    margin-left: 220px; /* Margem à esquerda para o conteúdo não sobrepor a sidebar */
+    padding: 15px; /* Espaçamento interno do conteúdo */
+}
+
+table {
+    width: 100%; /* Tabela ocupa toda a largura do conteúdo */
+    border-collapse: collapse; /* Remove espaços entre as células */
+}
+
+th, td {
+    padding: 10px; /* Espaçamento interno das células */
+    border: 1px solid white; /* Borda das células */
+    text-align: left; /* Alinhamento à esquerda do texto */
+}
+
+.red {
+    color: red; /* Aplica a cor vermelha */
+}

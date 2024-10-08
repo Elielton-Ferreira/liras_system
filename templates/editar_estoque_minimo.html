@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Estoque Mínimo</title>
-</head>
-<body>
-    <h1>Editar Estoque Mínimo do Produto</h1>
-    <form method="POST">
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Editar Estoque Mínimo do Produto</h1>
+<form method="POST" class="form-editar-estoque">
+    <div class="form-group">
         <label for="estoque_minimo">Novo Estoque Mínimo:</label>
-        <input type="number" name="estoque_minimo" required>
-        <button type="submit">Salvar</button>
-    </form>
-    <a href="/">Voltar</a>
-</body>
-</html>
+        <input type="number" name="estoque_minimo" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="/" class="btn btn-secondary">Voltar</a>
+</form>
+{% endblock %}
