@@ -40,16 +40,18 @@ def index():
     produtos = obter_produtos()
     return render_template('index.html', produtos=produtos)
 
-# Rota para adicionar um novo produto
-@app.route('/adicionar', methods=['POST'])
+# Rota para exibir o formulário de adicionar produto (GET) e adicionar o produto (POST)
+@app.route('/adicionar', methods=['GET', 'POST'])
 def adicionar():
-    nome = request.form['nome']
-    categoria = request.form['categoria']
-    quantidade = int(request.form['quantidade'])
-    preco = float(request.form['preco'])
-    estoque_minimo = int(request.form['estoque_minimo'])
-    adicionar_produto(nome, categoria, quantidade, preco, estoque_minimo)
-    return redirect('/')
+    if request.method == 'POST':
+        nome = request.form['nome']
+        categoria = request.form['categoria']
+        quantidade = int(request.form['quantidade'])
+        preco = float(request.form['preco'])
+        estoque_minimo = int(request.form['estoque_minimo'])
+        adicionar_produto(nome, categoria, quantidade, preco, estoque_minimo)
+        return redirect('/')
+    return render_template('adicionar_produto.html')
 
 # Rota para exibir o formulário de edição de estoque
 @app.route('/editar/<int:id>', methods=['GET'])

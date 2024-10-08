@@ -10,38 +10,41 @@
         body {
             background-color: #f8f9fa;
         }
-        .table {
-            margin-top: 20px;
-        }
-        .red {
-            color: red;
-        }
-        .header {
+        .sidebar {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            top: 0;
+            left: 0;
             background-color: #343a40;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
             color: white;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #575d63;
+        }
+        .content {
+            margin-left: 220px;
             padding: 20px;
-            text-align: center;
-        }
-        .footer {
-            background-color: #343a40;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Controle de Estoque</h1>
+    <div class="sidebar">
+        <a href="/">Produtos em Estoque</a>
+        <a href="/adicionar">Adicionar Produto</a>
     </div>
-    <div class="container mt-4">
-        {% block content %}{% endblock %}
-    </div>
-    <div class="footer">
-        <p>&copy; 2024 Seu Nome - Todos os direitos reservados.</p>
+
+    <div class="content">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </div>
 </body>
 </html>
