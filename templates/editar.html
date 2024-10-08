@@ -1,18 +1,27 @@
-{% extends 'base.html' %} <!-- Estende o template base para manter a estrutura comum -->
+{% extends 'base.html' %}
 
-{% block content %} <!-- Início do bloco de conteúdo -->
-<h1>Editar Estoque do Produto: {{ produto[1] }}</h1> <!-- Título da página, mostrando o nome do produto sendo editado -->
+{% block content %}
+<h1 class="my-4">Editar Estoque</h1>
 
-<form action="/atualizar/{{ produto[0] }}" method="POST" class="form-editar-estoque"> <!-- Início do formulário, enviando dados para a rota de atualização do produto -->
-    <div class="form-group"> <!-- Grupo de formulário para a quantidade -->
-        <label for="quantidade">Quantidade:</label> <!-- Rótulo do campo -->
-        <input type="number" name="quantidade" value="{{ produto[2] }}" class="form-control" required> <!-- Campo de entrada numérico para a quantidade, preenchido com o valor atual do produto, obrigatório -->
+<form action="/atualizar/{{ produto[0] }}" method="POST">
+    <div class="form-group">
+        <label for="nome">Nome do Produto:</label>
+        <input type="text" class="form-control" id="nome" name="nome" value="{{ produto[1] }}" readonly>  <!-- O campo é somente leitura -->
     </div>
-    <div class="form-group"> <!-- Grupo de formulário para o estoque mínimo -->
-        <label for="estoque_minimo">Estoque Mínimo:</label> <!-- Rótulo do campo -->
-        <input type="number" name="estoque_minimo" value="{{ produto[3] }}" class="form-control" required> <!-- Campo de entrada numérico para o estoque mínimo, preenchido com o valor atual do produto, obrigatório -->
+    <div class="form-group">
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" class="form-control" id="quantidade" name="quantidade" value="{{ produto[2] }}" required>  <!-- A quantidade é preenchida -->
     </div>
-    <button type="submit" class="btn btn-primary">Atualizar Estoque</button> <!-- Botão para submeter o formulário e atualizar o estoque -->
-    <a href="/" class="btn btn-secondary">Voltar</a> <!-- Botão para voltar à página inicial -->
+    <div class="form-group">
+        <label for="estoque_minimo">Estoque Mínimo:</label>
+        <input type="number" class="form-control" id="estoque_minimo" name="estoque_minimo" value="{{ produto[3] }}" required>  <!-- O estoque mínimo é preenchido -->
+    </div>
+    <div class="form-group">
+        <label for="preco">Preço:</label>
+        <input type="number" step="0.01" class="form-control" id="preco" name="preco" value="{{ produto[4] }}" required>  <!-- O preço é preenchido -->
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar Alterações</button>  <!-- Botão para enviar as alterações -->
 </form>
-{% endblock %} <!-- Fim do bloco de conteúdo -->
+
+<a href="/" class="btn btn-secondary mt-3">Voltar</a>  <!-- Link para voltar à página inicial -->
+{% endblock %}
