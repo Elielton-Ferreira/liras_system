@@ -81,6 +81,28 @@ def atualizar(id):
 
     return redirect(url_for('index'))
 
+# Rota para adicionar um novo vidro
+@app.route('/adicionar_vidro', methods=['GET', 'POST'])
+def adicionar_vidro():
+    if request.method == 'POST':
+        nome = request.form['nome']
+        altura = float(request.form['altura'])
+        largura = float(request.form['largura'])
+        area = altura * largura  # Calcula a área em m²
+
+        # Aqui você pode salvar os dados no banco de dados se necessário
+        # conn = conectar_bd()
+        # cursor = conn.cursor()
+        # cursor.execute("INSERT INTO vidros (nome, altura, largura, area) VALUES (?, ?, ?, ?)",
+        #                (nome, altura, largura, area))
+        # conn.commit()
+        # conn.close()
+
+        return f"Vidro adicionado com sucesso! Área: {area:.2f} m²"
+
+    return render_template('adicionar_vidro.html')
+
+
 # Executa o aplicativo Flask
 if __name__ == '__main__':
     app.run(debug=True)

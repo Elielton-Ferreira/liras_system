@@ -9,27 +9,66 @@
     <style>
         body {
             background-color: #f8f9fa; /* Cor de fundo da página */
+            font-family: Arial, sans-serif; /* Fonte da página */
         }
+
         .sidebar {
             height: 100%; /* Altura total da barra lateral */
             width: 200px; /* Largura da barra lateral */
             position: fixed; /* Fixa a barra lateral na tela */
             top: 0; /* Alinha a barra no topo */
             left: 0; /* Alinha a barra à esquerda */
-            background-color: #000000; /* Cor de fundo da barra lateral */
+            background-color: #000; /* Cor de fundo da barra lateral */
             padding-top: 20px; /* Espaçamento no topo da barra lateral */
         }
+
         .sidebar a {
             padding: 10px 15px; /* Espaçamento interno dos links */
             text-decoration: none; /* Remove o sublinhado dos links */
-            font-size: 18px; /* Tamanho da fonte dos links */
             color: white; /* Cor padrão do texto dos links */
             display: block; /* Faz os links ocuparem toda a largura disponível */
+            transition: background-color 0.3s; /* Efeito de transição suave para o fundo */
         }
+
         .sidebar a:hover {
-            background-color: yellow; /* Cor de fundo dos links quando o mouse passa por cima */
-            color: black; /* Cor do texto dos links quando o mouse passa por cima */
+            background-color: yellow; /* Cor de fundo dos links ao passar o mouse */
+            color: black; /* Cor do texto dos links ao passar o mouse */
         }
+
+        .dropdown {
+            position: relative; /* Para posicionar o sub-menu em relação a este elemento */
+        }
+
+        .dropdown-content {
+            display: none; /* Oculta o sub-menu inicialmente */
+            position: absolute; /* Permite o posicionamento livre do sub-menu */
+            background-color: #343a40; /* Cor de fundo do sub-menu */
+            min-width: 200px; /* Largura mínima do sub-menu */
+            z-index: 1; /* Z-index para sobrepor outros elementos */
+            left: 0; /* Alinha o sub-menu à esquerda do menu principal */
+            top: 100%; /* Alinha o sub-menu logo abaixo do menu principal */
+            margin-top: 0; /* Remove o espaçamento acima do sub-menu */
+            border-radius: 5px; /* Cantos arredondados do sub-menu */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra do sub-menu */
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block; /* Mostra o sub-menu ao passar o mouse */
+        }
+
+        .dropdown-content a {
+            color: white; /* Cor do texto do sub-menu */
+            padding: 10px 15px; /* Espaçamento interno do sub-menu */
+            text-decoration: none; /* Remove o sublinhado dos links do sub-menu */
+            display: block; /* Faz os links ocuparem toda a largura disponível */
+            transition: background-color 0.3s; /* Efeito de transição suave para o fundo */
+        }
+
+        .dropdown-content a:hover {
+            background-color: yellow; /* Cor de fundo do link do sub-menu ao passar o mouse */
+            color: black; /* Cor do texto do link do sub-menu ao passar o mouse */
+        }
+
         .content {
             margin-left: 220px; /* Espaço à esquerda para a barra lateral */
             padding: 20px; /* Espaçamento interno do conteúdo principal */
@@ -39,7 +78,13 @@
 <body>
     <div class="sidebar"> <!-- Início da barra lateral -->
         <a href="/">Produtos em Estoque</a> <!-- Link para a página de produtos -->
-        <a href="/adicionar">Adicionar Produto</a> <!-- Link para a página de adicionar produto -->
+        <div class="dropdown">
+            <a href="#" class="dropbtn">Adicionar Produto</a> <!-- Link para o menu de Adicionar Produto -->
+            <div class="dropdown-content">
+                <a href="/adicionar_vidro">Vidros</a> <!-- Link para a página de adicionar vidros -->
+                <a href="/adicionar">Acessórios</a> <!-- Link para a página de adicionar acessórios -->
+            </div>
+        </div>
     </div>
 
     <div class="content"> <!-- Início da área de conteúdo principal -->
