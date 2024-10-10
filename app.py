@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 
 app = Flask(__name__)
+app.secret_key = 'supersecretkey'  # Necessário para exibir mensagens flash
 
 # Função para conectar ao banco de dados
 def conectar_bd():
@@ -102,6 +103,18 @@ def adicionar_vidro():
 
     return render_template('adicionar_vidro.html')
 
+# Rota para excluir um produto
+@app.route('/excluir/<int:id>', methods=['POST'])
+def excluir(id):
+    conn = conectar_bd()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM produtos WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+
+    flash('Produto excluído com sucesso!', 'success')
+    return redirect(url_for('index'))
 
 # Executa o aplicativo Flask
 if __name__ == '__main__':

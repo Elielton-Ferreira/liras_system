@@ -30,7 +30,12 @@
             <td>{{ produto[3] }}</td>
             <td>R$ {{ "%.2f"|format(produto[4]) }}</td>
             <td>{{ produto[5] }}</td>
-            <td><a href="/editar/{{ produto[0] }}" class="btn btn-sm btn-warning">Editar Estoque</a></td>
+            <td>
+                <a href="/editar/{{ produto[0] }}" class="btn btn-sm btn-warning">Editar Estoque</a>
+                <form action="/excluir/{{ produto[0] }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
