@@ -1,34 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Estoque de Vidros</h2>
+<h1 class="my-4">Estoque Vidros Vidraçaria Lira's</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nome do Vidro</th>
-                <th>Altura (m)</th>
-                <th>Largura (m)</th>
-                <th>Área (m²)</th>
-                <th>Preço por m² (R$)</th>
-                <th>Valor Total (R$)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for vidro in vidros %}
-                <tr>
-                    <td>{{ vidro.nome }}</td>
-                    <td>{{ vidro.altura }}</td>
-                    <td>{{ vidro.largura }}</td>
-                    <td>{{ vidro.area }}</td>
-                    <td>{{ vidro.preco_m2 }}</td> <!-- Corrigido de vidro.preco para vidro.preco_m2 -->
-                    <td>{{ vidro.area * vidro.preco_m2 }}</td> <!-- Cálculo do valor total -->
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6" class="text-center">Nenhum vidro encontrado.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<!-- Formulário de Pesquisa -->
+<form method="POST" class="form-inline mb-3">
+    <input type="text" name="pesquisa" class="form-control mr-2" placeholder="Pesquisar vidro" required>
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+</form>
+
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Nome</th>
+            <th>Altura (cm)</th>
+            <th>Largura (cm)</th>
+            <th>Preço por m² (R$)</th>
+            <th>Área (m²)</th>
+            <th>Valor Total (R$)</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vidro in vidros %}
+        <tr>
+            <td>{{ vidro.nome }}</td>
+            <td>{{ vidro.altura }}</td>
+            <td>{{ vidro.largura }}</td>
+            <td>R$ {{ "%.2f"|format(vidro.preco_m2) }}</td>
+            <td>{{ "%.2f"|format(vidro.area) }}</td>
+            <td>R$ {{ "%.2f"|format(vidro.preco_m2 * vidro.area) }}</td>
+            <td>
+                <a href="{{ url_for('editar_vidro', id=vidro.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <form action="{{ url_for('excluir_vidro', id=vidro.id) }}" method="POST" style="display:inline;" id="delete-form-{{ vidro.id }}">
+                    <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ vidro.id }})">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="/adicionar_vidro" class="btn btn-success mt-4">Adicionar Vidro</a>
+
+
+<script>
+    function confirmDelete(id) {
+        if (confirm('Tem certeza que deseja excluir este vidro?')) {
+            // Envia o formulário de exclusão
+            document.getElementById('delete-form-' + id).submit();
+        }
+    }
+</script>
+
 {% endblock %}

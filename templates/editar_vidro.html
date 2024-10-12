@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="my-4">Editar Vidro - {{ vidro.nome }}</h1>
+
+<!-- Formulário de Edição -->
+<form method="POST" action="{{ url_for('editar_vidro', id=vidro.id) }}">
+    <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input type="text" class="form-control" id="nome" name="nome" value="{{ vidro.nome }}" required>
+    </div>
+    <div class="form-group">
+        <label for="altura">Altura (cm):</label>
+        <input type="number" class="form-control" id="altura" name="altura" value="{{ vidro.altura }}" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="largura">Largura (cm):</label>
+        <input type="number" class="form-control" id="largura" name="largura" value="{{ vidro.largura }}" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="preco_m2">Preço por m² (R$):</label>
+        <input type="number" class="form-control" id="preco_m2" name="preco_m2" value="{{ vidro.preco_m2 }}" step="0.01" required>
+    </div>
+    <button type="submit" class="btn btn-success mt-3">Atualizar Vidro</button>
+    <a href="{{ url_for('estoque_vidros') }}" class="btn btn-secondary mt-3">Cancelar</a>
+</form>
+
+{% endblock %}
