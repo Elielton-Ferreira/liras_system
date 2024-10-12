@@ -44,6 +44,7 @@ def adicionar_produto():
         conn.commit()
         conn.close()
 
+        flash('Produto adicionado com sucesso!', 'success')  # Mensagem de sucesso
         return redirect(url_for('index'))
 
     return render_template('adicionar_produto.html')
@@ -80,6 +81,7 @@ def atualizar(id):
     conn.commit()
     conn.close()
 
+    flash('Produto atualizado com sucesso!', 'success')  # Mensagem de sucesso
     return redirect(url_for('index'))
 
 # Rota para adicionar um novo vidro
@@ -89,7 +91,7 @@ def adicionar_vidro():
         nome = request.form['nome']
         altura = float(request.form['altura'])
         largura = float(request.form['largura'])
-        area = altura * largura  # Calcula a área em m²
+        area = altura * largura / 1000000  # Calcula a área em m² (milímetros para metros)
 
         # Aqui você pode salvar os dados no banco de dados se necessário
         # conn = conectar_bd()
@@ -99,7 +101,8 @@ def adicionar_vidro():
         # conn.commit()
         # conn.close()
 
-        return f"Vidro adicionado com sucesso! Área: {area:.2f} m²"
+        flash(f'Vidro adicionado com sucesso! Área: {area:.2f} m²', 'success')  # Mensagem de sucesso
+        return redirect(url_for('adicionar_vidro'))
 
     return render_template('adicionar_vidro.html')
 
@@ -113,7 +116,7 @@ def excluir(id):
     conn.commit()
     conn.close()
 
-    flash('Produto excluído com sucesso!', 'success')
+    flash('Produto excluído com sucesso!', 'success')  # Mensagem de sucesso
     return redirect(url_for('index'))
 
 # Executa o aplicativo Flask
