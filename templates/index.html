@@ -32,7 +32,8 @@
             <td>{{ produto[5] }}</td>
             <td>
                 <a href="/editar/{{ produto[0] }}" class="btn btn-sm btn-warning">Editar Estoque</a>
-                <form action="/excluir/{{ produto[0] }}" method="POST" style="display:inline;">
+                <!-- Botão de Excluir com pop-up de confirmação -->
+                <form action="/excluir/{{ produto[0] }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este produto?');" style="display:inline;">
                     <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
                 </form>
             </td>
