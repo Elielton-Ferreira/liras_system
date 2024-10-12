@@ -1,90 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Adicionar Vidro</h2>
-
-    <form method="POST" action="/adicionar_vidro">
-        <div class="form-group">
-            <label for="nome" class="text-dark">Nome do Vidro</label>
-            <input type="text" class="form-control" id="nome" name="nome" required>
-        </div>
-        <div class="form-group">
-            <label for="altura" class="text-dark">Altura (mm)</label>
-            <input type="number" step="0.01" class="form-control" id="altura" name="altura" required oninput="calcularArea()">
-        </div>
-        <div class="form-group">
-            <label for="largura" class="text-dark">Largura (mm)</label>
-            <input type="number" step="0.01" class="form-control" id="largura" name="largura" required oninput="calcularArea()">
-        </div>
-        <div class="form-group">
-            <label for="area" class="text-dark">Área (m²)</label>
-            <input type="text" class="form-control" id="area" name="area" readonly>
-        </div>
-        <div class="form-group">
-            <label for="preco_m2" class="text-dark">Preço por m² (R$)</label>
-            <input type="number" step="0.01" class="form-control" id="preco_m2" name="preco_m2" required oninput="calcularArea()">
-        </div>
-        <div class="form-group">
-            <label for="valor_total" class="text-dark">Valor Total (R$)</label>
-            <input type="text" class="form-control" id="valor_total" name="valor_total" readonly>
-        </div>
-        <button type="submit" class="btn btn-primary">Adicionar Vidro</button>
-    </form>
-
-    <!-- Modal para exibir mensagens -->
-    <div class="modal fade" id="mensagemModal" tabindex="-1" role="dialog" aria-labelledby="mensagemModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="mensagemModalLabel">Mensagem</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }}">{{ message }}</div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                </div>
+    <div class="container">
+        <h1>Adicionar Vidro</h1>
+        <form method="POST" action="/adicionar_vidro">
+            <div class="form-group">
+                <label for="nome">Nome do Vidro</label>
+                <input type="text" class="form-control" id="nome" name="nome" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="altura">Altura (m)</label>
+                <input type="number" class="form-control" id="altura" name="altura" step="0.01" oninput="calcular()" required>
+            </div>
+            <div class="form-group">
+                <label for="largura">Largura (m)</label>
+                <input type="number" class="form-control" id="largura" name="largura" step="0.01" oninput="calcular()" required>
+            </div>
+            <div class="form-group">
+                <label for="preco">Preço por m² (R$)</label>
+                <input type="number" class="form-control" id="preco" name="preco" step="0.01" oninput="calcular()" required>
+            </div>
+            <div class="form-group">
+                <label for="area">Área (m²)</label>
+                <input type="text" class="form-control" id="area" name="area" readonly>
+            </div>
+            <div class="form-group">
+                <label for="valor_total">Valor Total (R$)</label>
+                <input type="text" class="form-control" id="valor_total" name="valor_total" readonly>
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar Vidro</button>
+        </form>
     </div>
 
     <script>
-        function calcularArea() {
-            let altura = parseFloat(document.getElementById('altura').value);
-            let largura = parseFloat(document.getElementById('largura').value);
-            
-            if (!isNaN(altura) && !isNaN(largura) && altura > 0 && largura > 0) {
-                altura = altura / 1000;
-                largura = largura / 1000;
+        function calcular() {
+            // Obtém os valores dos campos de altura, largura e preço
+            const altura = parseFloat(document.getElementById('altura').value) || 0;
+            const largura = parseFloat(document.getElementById('largura').value) || 0;
+            const preco = parseFloat(document.getElementById('preco').value) || 0;
 
-                let area = altura * largura;
-                document.getElementById('area').value = area.toFixed(2);
+            // Calcula a área
+            const area = altura * largura;
+            document.getElementById('area').value = area.toFixed(2); // Define o valor no campo de área
 
-                let precoM2 = parseFloat(document.getElementById('preco_m2').value);
-                if (!isNaN(precoM2) && precoM2 > 0) {
-                    let valorTotal = area * precoM2;
-                    document.getElementById('valor_total').value = valorTotal.toFixed(2);
-                }
-            } else {
-                document.getElementById('area').value = "0.00";
-                document.getElementById('valor_total').value = "0.00";
-            }
+            // Calcula o valor total
+            const valor_total = area * preco;
+            document.getElementById('valor_total').value = valor_total.toFixed(2); // Define o valor no campo de valor total
         }
-
-        // Mostra o modal somente quando há mensagens
-        $(document).ready(function() {
-            {% if get_flashed_messages() %}
-                $('#mensagemModal').modal('show');
-            {% endif %}
-        });
     </script>
 {% endblock %}
