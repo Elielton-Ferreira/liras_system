@@ -121,13 +121,36 @@ def excluir(id):
     return redirect(url_for('index'))
 
 # Rota para consultar estoque vidros
-@app.route('/estoque_vidros', methods=['GET'])
+@app.route('/estoque_vidros', methods=['GET', 'POST'])
 def estoque_vidros():
     conn = conectar_bd()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM vidros")
+
+    if request.method == 'POST':
+        pesquisa = request.form['pesquisa']
+        cursor.execute("SELECT * FROM vidros WHERE nome LIKE ?", ('%' + pesquisa + '%',))
+    else:
+        cursor.execute("SELECT * FROM vidros")
+
     vidros = cursor.fetchall()
     conn.close()
+
+    vidros_com_valores_totais = []
+
+    for vidro in vidros:
+        valor_total = vidro['preco_m2'] * vidro['area']
+        vidro_dict = {
+            'id': vidro['id'],
+            'nome': vidro['nome'],
+            'altura': vidro['altura'],
+            'largura': vidro['largura'],
+            'preco_m2': vidro['preco_m2'],
+            'area': vidro['area'],
+            'valor_total': valor_total
+        }
+        vidros_com_valores_totais.append(vidro_dict)
+
+    return render_template('estoque_vidros.html', vidros=vidros_com_valores_totais)
 
     # Criar uma lista para armazenar vidros com valores totais
     vidros_com_valores_totais = []
