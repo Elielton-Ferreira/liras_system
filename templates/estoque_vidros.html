@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Estoque de Vidros</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome do Vidro</th>
+                <th>Altura (m)</th>
+                <th>Largura (m)</th>
+                <th>Área (m²)</th>
+                <th>Preço por m² (R$)</th>
+                <th>Valor Total (R$)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vidro in vidros %}
+                <tr>
+                    <td>{{ vidro.nome }}</td>
+                    <td>{{ vidro.altura }}</td>
+                    <td>{{ vidro.largura }}</td>
+                    <td>{{ vidro.area }}</td>
+                    <td>{{ vidro.preco_m2 }}</td> <!-- Corrigido de vidro.preco para vidro.preco_m2 -->
+                    <td>{{ vidro.area * vidro.preco_m2 }}</td> <!-- Cálculo do valor total -->
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Nenhum vidro encontrado.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

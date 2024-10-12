@@ -17,8 +17,8 @@
                 <input type="number" class="form-control" id="largura" name="largura" step="0.01" oninput="calcular()" required>
             </div>
             <div class="form-group">
-                <label for="preco">Preço por m² (R$)</label>
-                <input type="number" class="form-control" id="preco" name="preco" step="0.01" oninput="calcular()" required>
+                <label for="preco_m2">Preço por m² (R$)</label>
+                <input type="number" class="form-control" id="preco_m2" name="preco_m2" step="0.01" oninput="calcular()" required>
             </div>
             <div class="form-group">
                 <label for="area">Área (m²)</label>
@@ -34,18 +34,19 @@
 
     <script>
         function calcular() {
-            // Obtém os valores dos campos de altura, largura e preço
             const altura = parseFloat(document.getElementById('altura').value) || 0;
             const largura = parseFloat(document.getElementById('largura').value) || 0;
-            const preco = parseFloat(document.getElementById('preco').value) || 0;
-
+            const preco_m2 = parseFloat(document.getElementById('preco_m2').value) || 0;
+    
             // Calcula a área
             const area = altura * largura;
             document.getElementById('area').value = area.toFixed(2); // Define o valor no campo de área
-
+    
             // Calcula o valor total
-            const valor_total = area * preco;
+            const valor_total = area * preco_m2;
             document.getElementById('valor_total').value = valor_total.toFixed(2); // Define o valor no campo de valor total
+            console.log("Altura:", altura, "Largura:", largura, "Preço por m²:", preco_m2, "Área:", area, "Valor Total:", valor_total);
         }
     </script>
+    
 {% endblock %}

@@ -86,15 +86,27 @@
 <body>
     <div class="sidebar"> <!-- Início da barra lateral -->
         <img src="{{ url_for('static', filename='imagens/logo.png') }}" alt="Logo" class="logo"> <!-- Logo da empresa -->
-        <a href="/">Produtos em Estoque</a> <!-- Link para a página de produtos -->
+        <a href="/">Produtos</a> <!-- Link para a página de produtos -->
+        
         <div class="dropdown">
-            <a href="#" class="dropbtn">Adicionar Produto</a> <!-- Link para o menu de Adicionar Produto -->
+            <a href="#" class="dropbtn">Estoque</a> <!-- Link para o menu de Produtos em Estoque -->
+            <div class="dropdown-content">
+                <a href="/estoque_vidros">Vidros em Estoque</a> <!-- Link para a página de vidro em estoque -->
+                <!-- Adicione outros produtos aqui -->
+                <a href="/">Acessórios</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <a href="#" class="dropbtn">Adicionar Produtos</a> <!-- Link para o menu de Adicionar Produto -->
             <div class="dropdown-content">
                 <a href="/adicionar_vidro">Vidros</a> <!-- Link para a página de adicionar vidros -->
                 <a href="/adicionar">Acessórios</a> <!-- Link para a página de adicionar acessórios -->
             </div>
         </div>
     </div>
+</body>
+
 
     <div class="content"> <!-- Início da área de conteúdo principal -->
         <div class="container"> <!-- Container para centralizar o conteúdo -->

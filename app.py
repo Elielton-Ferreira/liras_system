@@ -91,15 +91,16 @@ def adicionar_vidro():
         nome = request.form['nome']
         altura = float(request.form['altura'])
         largura = float(request.form['largura'])
-        area = altura * largura / 1000000  # Calcula a área em m² (milímetros para metros)
+        preco_m2 = float(request.form['preco_m2'])
+        area = altura * largura  # Área em m²
 
-        # Aqui você pode salvar os dados no banco de dados se necessário
-        # conn = conectar_bd()
-        # cursor = conn.cursor()
-        # cursor.execute("INSERT INTO vidros (nome, altura, largura, area) VALUES (?, ?, ?, ?)",
-        #                (nome, altura, largura, area))
-        # conn.commit()
-        # conn.close()
+        # Conectar ao banco de dados e inserir o vidro
+        conn = conectar_bd()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO vidros (nome, altura, largura, preco_m2, area) VALUES (?, ?, ?, ?, ?)",
+                       (nome, altura, largura, preco_m2, area))
+        conn.commit()
+        conn.close()
 
         flash(f'Vidro adicionado com sucesso! Área: {area:.2f} m²', 'success')  # Mensagem de sucesso
         return redirect(url_for('adicionar_vidro'))
@@ -118,6 +119,17 @@ def excluir(id):
 
     flash('Produto excluído com sucesso!', 'success')  # Mensagem de sucesso
     return redirect(url_for('index'))
+
+# Rota para consultar estoque vidros
+@app.route('/estoque_vidros', methods=['GET'])
+def estoque_vidros():
+    conn = conectar_bd()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM vidros")
+    vidros = cursor.fetchall()
+    conn.close()
+
+    return render_template('estoque_vidros.html', vidros=vidros)
 
 # Executa o aplicativo Flask
 if __name__ == '__main__':
