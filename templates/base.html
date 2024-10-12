@@ -73,10 +73,19 @@
             margin-left: 220px; /* Espaço à esquerda para a barra lateral */
             padding: 20px; /* Espaçamento interno do conteúdo principal */
         }
+
+        .logo {
+            display: block; /* Faz a imagem ser um bloco */
+            margin: 0 auto; /* Centraliza a imagem */
+            max-width: 100%; /* Limita a largura máxima */
+            height: auto; /* Mantém a proporção */
+            padding: 0 15px; /* Espaçamento horizontal para a imagem */
+        }
     </style>
 </head>
 <body>
     <div class="sidebar"> <!-- Início da barra lateral -->
+        <img src="{{ url_for('static', filename='imagens/logo.png') }}" alt="Logo" class="logo"> <!-- Logo da empresa -->
         <a href="/">Produtos em Estoque</a> <!-- Link para a página de produtos -->
         <div class="dropdown">
             <a href="#" class="dropbtn">Adicionar Produto</a> <!-- Link para o menu de Adicionar Produto -->
