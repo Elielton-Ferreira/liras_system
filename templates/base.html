@@ -35,25 +35,13 @@
             color: black; /* Cor do texto dos links ao passar o mouse */
         }
 
-        .dropdown {
-            position: relative; /* Para posicionar o sub-menu em relação a este elemento */
-        }
-
         .dropdown-content {
             display: none; /* Oculta o sub-menu inicialmente */
-            position: absolute; /* Permite o posicionamento livre do sub-menu */
             background-color: #343a40; /* Cor de fundo do sub-menu */
             min-width: 200px; /* Largura mínima do sub-menu */
             z-index: 1; /* Z-index para sobrepor outros elementos */
-            left: 0; /* Alinha o sub-menu à esquerda do menu principal */
-            top: 100%; /* Alinha o sub-menu logo abaixo do menu principal */
-            margin-top: 0; /* Remove o espaçamento acima do sub-menu */
             border-radius: 5px; /* Cantos arredondados do sub-menu */
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra do sub-menu */
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block; /* Mostra o sub-menu ao passar o mouse */
         }
 
         .dropdown-content a {
@@ -89,24 +77,21 @@
         <a href="/">Produtos</a> <!-- Link para a página de produtos -->
         
         <div class="dropdown">
-            <a href="#" class="dropbtn">Estoque</a> <!-- Link para o menu de Produtos em Estoque -->
-            <div class="dropdown-content">
-                <a href="/estoque_vidros">Vidros em Estoque</a> <!-- Link para a página de vidro em estoque -->
-                <!-- Adicione outros produtos aqui -->
-                <a href="/">Acessórios</a>
+            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('estoqueDropdown')">Estoque</a> <!-- Link para o menu de Produtos em Estoque -->
+            <div id="estoqueDropdown" class="dropdown-content">
+                <a href="/estoque_vidros">Vidros e Espelhos</a> <!-- Link para a página de vidro em estoque -->
+                <a href="/">Acessórios</a> <!-- Adicione outros produtos aqui -->
             </div>
         </div>
 
         <div class="dropdown">
-            <a href="#" class="dropbtn">Adicionar Produtos</a> <!-- Link para o menu de Adicionar Produto -->
-            <div class="dropdown-content">
-                <a href="/adicionar_vidro">Vidros</a> <!-- Link para a página de adicionar vidros -->
+            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('adicionarDropdown')">Adicionar Produtos</a> <!-- Link para o menu de Adicionar Produto -->
+            <div id="adicionarDropdown" class="dropdown-content">
+                <a href="/adicionar_vidro">Vidros e Espelhos</a> <!-- Link para a página de adicionar vidros -->
                 <a href="/adicionar">Acessórios</a> <!-- Link para a página de adicionar acessórios -->
             </div>
         </div>
     </div>
-</body>
-
 
     <div class="content"> <!-- Início da área de conteúdo principal -->
         <div class="container"> <!-- Container para centralizar o conteúdo -->
@@ -146,6 +131,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- JS do Bootstrap -->
     
     <script>
+        // Função para alternar a visibilidade do dropdown
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+        }
+
         // Mostra o modal apenas se houver mensagens
         $(document).ready(function() {
             {% if get_flashed_messages() %}
