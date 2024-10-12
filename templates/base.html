@@ -1,148 +1,148 @@
 <!DOCTYPE html>
-<html lang="pt-BR"> <!-- Define o idioma da página como Português do Brasil -->
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8"> <!-- Define o conjunto de caracteres como UTF-8 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configura a viewport para responsividade -->
-    <title>Controle de Estoque</title> <!-- Título da página que aparece na aba do navegador -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Importa o Bootstrap para estilização -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> <!-- Link para o arquivo CSS personalizado -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
         body {
-            background-color: #f8f9fa; /* Cor de fundo da página */
-            font-family: Arial, sans-serif; /* Fonte da página */
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
         }
 
         .sidebar {
-            height: 100%; /* Altura total da barra lateral */
-            width: 200px; /* Largura da barra lateral */
-            position: fixed; /* Fixa a barra lateral na tela */
-            top: 0; /* Alinha a barra no topo */
-            left: 0; /* Alinha a barra à esquerda */
-            background-color: #000; /* Cor de fundo da barra lateral */
-            padding-top: 20px; /* Espaçamento no topo da barra lateral */
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #000;
+            padding-top: 20px;
         }
 
         .sidebar a {
-            padding: 10px 15px; /* Espaçamento interno dos links */
-            text-decoration: none; /* Remove o sublinhado dos links */
-            color: white; /* Cor padrão do texto dos links */
-            display: block; /* Faz os links ocuparem toda a largura disponível */
-            transition: background-color 0.3s; /* Efeito de transição suave para o fundo */
+            padding: 10px 15px;
+            text-decoration: none;
+            color: white;
+            display: block;
+            transition: background-color 0.3s;
         }
 
         .sidebar a:hover {
-            background-color: yellow; /* Cor de fundo dos links ao passar o mouse */
-            color: black; /* Cor do texto dos links ao passar o mouse */
+            background-color: yellow;
+            color: black;
         }
 
         .dropdown-content {
-            display: none; /* Oculta o sub-menu inicialmente */
-            background-color: #343a40; /* Cor de fundo do sub-menu */
-            min-width: 200px; /* Largura mínima do sub-menu */
-            z-index: 1; /* Z-index para sobrepor outros elementos */
-            border-radius: 5px; /* Cantos arredondados do sub-menu */
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra do sub-menu */
+            display: none;
+            background-color: #343a40;
+            min-width: 200px;
+            z-index: 1;
+            border-radius: 5px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .dropdown-content a {
-            color: white; /* Cor do texto do sub-menu */
-            padding: 10px 15px; /* Espaçamento interno do sub-menu */
-            text-decoration: none; /* Remove o sublinhado dos links do sub-menu */
-            display: block; /* Faz os links ocuparem toda a largura disponível */
-            transition: background-color 0.3s; /* Efeito de transição suave para o fundo */
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
         }
 
         .dropdown-content a:hover {
-            background-color: yellow; /* Cor de fundo do link do sub-menu ao passar o mouse */
-            color: black; /* Cor do texto do link do sub-menu ao passar o mouse */
+            background-color: yellow;
+            color: black;
         }
 
         .content {
-            margin-left: 220px; /* Espaço à esquerda para a barra lateral */
-            padding: 20px; /* Espaçamento interno do conteúdo principal */
+            margin-left: 220px;
+            padding: 20px;
         }
 
         .logo {
-            display: block; /* Faz a imagem ser um bloco */
-            margin: 0 auto; /* Centraliza a imagem */
-            max-width: 100%; /* Limita a largura máxima */
-            height: auto; /* Mantém a proporção */
-            padding: 0 15px; /* Espaçamento horizontal para a imagem */
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+            padding: 0 15px;
+        }
+
+        .active .dropdown-content {
+            display: block; /* Mantém o dropdown visível se o pai tiver a classe active */
         }
     </style>
 </head>
 <body>
-    <div class="sidebar"> <!-- Início da barra lateral -->
-        <img src="{{ url_for('static', filename='imagens/logo.png') }}" alt="Logo" class="logo"> <!-- Logo da empresa -->
-        <a href="/">Produtos</a> <!-- Link para a página de produtos -->
+    <div class="sidebar">
+        <img src="{{ url_for('static', filename='imagens/logo.png') }}" alt="Logo" class="logo">
+        <a href="/">Produtos</a>
         
-        <div class="dropdown">
-            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('estoqueDropdown')">Estoque</a> <!-- Link para o menu de Produtos em Estoque -->
+        <div class="dropdown" id="estoqueDropdownParent">
+            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('estoqueDropdown', 'estoqueDropdownParent')">Estoque</a>
             <div id="estoqueDropdown" class="dropdown-content">
-                <a href="/estoque_vidros">Vidros e Espelhos</a> <!-- Link para a página de vidro em estoque -->
-                <a href="/">Acessórios</a> <!-- Adicione outros produtos aqui -->
+                <a href="/estoque_vidros">Vidros e Espelhos</a>
+                <a href="/">Acessórios</a>
             </div>
         </div>
 
-        <div class="dropdown">
-            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('adicionarDropdown')">Adicionar</a> <!-- Link para o menu de Adicionar Produto -->
+        <div class="dropdown" id="adicionarDropdownParent">
+            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('adicionarDropdown', 'adicionarDropdownParent')">Adicionar</a>
             <div id="adicionarDropdown" class="dropdown-content">
-                <a href="/adicionar_vidro">Vidros e Espelhos</a> <!-- Link para a página de adicionar vidros -->
-                <a href="/adicionar">Acessórios</a> <!-- Link para a página de adicionar acessórios -->
+                <a href="/adicionar_vidro">Vidros e Espelhos</a>
+                <a href="/adicionar">Acessórios</a>
             </div>
         </div>
     </div>
 
-    <div class="content"> <!-- Início da área de conteúdo principal -->
-        <div class="container"> <!-- Container para centralizar o conteúdo -->
-            {% block content %}{% endblock %} <!-- Bloco onde o conteúdo das páginas será injetado -->
+    <div class="content">
+        <div class="container">
+            {% block content %}{% endblock %}
         </div>
     </div>
 
-    <!-- Modal para exibir mensagens -->
-    <div class="modal fade" id="mensagemModal" tabindex="-1" role="dialog" aria-labelledby="mensagemModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="mensagemModalLabel">Mensagem</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }}">{{ message }}</div>
-                            {% endfor %}
-                        {% else %}
-                            <p>Nenhuma mensagem para exibir.</p>
-                        {% endif %}
-                    {% endwith %}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> <!-- JS do jQuery -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- JS do Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
     <script>
-        // Função para alternar a visibilidade do dropdown
-        function toggleDropdown(dropdownId) {
-            const dropdown = document.getElementById(dropdownId);
-            dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
-        }
+        // Verifica o estado dos dropdowns no localStorage ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            const estoqueDropdownState = localStorage.getItem('estoqueDropdown');
+            const adicionarDropdownState = localStorage.getItem('adicionarDropdown');
 
-        // Mostra o modal apenas se houver mensagens
-        $(document).ready(function() {
-            {% if get_flashed_messages() %}
-                $('#mensagemModal').modal('show');
-            {% endif %}
+            if (estoqueDropdownState === 'true') {
+                toggleDropdown('estoqueDropdown', 'estoqueDropdownParent');
+            }
+            if (adicionarDropdownState === 'true') {
+                toggleDropdown('adicionarDropdown', 'adicionarDropdownParent');
+            }
         });
+
+        function toggleDropdown(dropdownId, parentId) {
+            const dropdown = document.getElementById(dropdownId);
+            const parentDropdown = document.getElementById(parentId);
+
+            // Oculta todos os dropdowns
+            document.querySelectorAll('.dropdown-content').forEach(function(content) {
+                content.style.display = 'none';
+                localStorage.setItem(content.id, 'false'); // Atualiza o estado para falso
+            });
+            document.querySelectorAll('.dropdown').forEach(function(dropdown) {
+                dropdown.classList.remove('active'); // Remove a classe active de todos os dropdowns
+            });
+
+            // Se o dropdown não estava visível, mostre-o e adicione a classe 'active'
+            if (dropdown.style.display !== 'block') {
+                dropdown.style.display = 'block';
+                parentDropdown.classList.add('active');
+                localStorage.setItem(dropdownId, 'true'); // Atualiza o estado para verdadeiro
+            } else {
+                dropdown.style.display = 'none'; // Se estava visível, oculta
+                localStorage.setItem(dropdownId, 'false'); // Atualiza o estado para falso
+            }
+        }
     </script>
 </body>
 </html>
