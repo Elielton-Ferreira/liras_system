@@ -95,6 +95,8 @@
                 <a href="/adicionar">Acessórios</a>
             </div>
         </div>
+
+        <a href="{{ url_for('logout') }}" class="logout-btn">Sair</a>  <!-- Link de logout -->
     </div>
 
     <div class="content">
@@ -154,8 +156,10 @@
 
             // Oculta todos os dropdowns
             document.querySelectorAll('.dropdown-content').forEach(function(content) {
-                content.style.display = 'none';
-                localStorage.setItem(content.id, 'false'); // Atualiza o estado para falso
+                if (content.id !== dropdownId) {
+                    content.style.display = 'none'; // Oculta dropdowns que não estão sendo clicados
+                    localStorage.setItem(content.id, 'false'); // Atualiza o estado para falso
+                }
             });
             document.querySelectorAll('.dropdown').forEach(function(dropdown) {
                 dropdown.classList.remove('active'); // Remove a classe active de todos os dropdowns

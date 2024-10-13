@@ -1,8 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
+from auth import auth  # Importa o Blueprint de autenticação
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Necessário para exibir mensagens flash
+
+# Registra o blueprint de autenticação
+app.register_blueprint(auth)
 
 # Função para conectar ao banco de dados
 def conectar_bd():
@@ -73,10 +77,10 @@ def atualizar(id):
 
     conn = conectar_bd()
     cursor = conn.cursor()
-    cursor.execute("""
-        UPDATE produtos
-        SET quantidade = ?, estoque_minimo = ?, preco = ?
-        WHERE id = ?
+    cursor.execute(""" 
+        UPDATE produtos 
+        SET quantidade = ?, estoque_minimo = ?, preco = ? 
+        WHERE id = ? 
     """, (quantidade, estoque_minimo, preco, id))
     conn.commit()
     conn.close()
@@ -175,10 +179,10 @@ def editar_vidro(id):
         # Atualiza os dados do vidro
         conn = conectar_bd()
         cursor = conn.cursor()
-        cursor.execute("""
-            UPDATE vidros
-            SET nome = ?, altura = ?, largura = ?, preco_m2 = ?, area = ?
-            WHERE id = ?
+        cursor.execute(""" 
+            UPDATE vidros 
+            SET nome = ?, altura = ?, largura = ?, preco_m2 = ?, area = ? 
+            WHERE id = ? 
         """, (nome, altura, largura, preco_m2, area, id))
         conn.commit()
         conn.close()
@@ -200,6 +204,25 @@ def excluir_vidro(id):
 
     flash('Vidro excluído com sucesso!', 'success')  # Mensagem de sucesso
     return redirect(url_for('estoque_vidros'))  # Redireciona de volta para a lista de vidros
+
+# Rota para fazer logout
+@app.route('/logout')
+def logout():
+    session.pop('usuario', None)  # Remove a sessão do usuário
+    flash('Você saiu com sucesso!', 'success')  # Mensagem de sucesso
+    return redirect(url_for('login'))  # Redireciona para a tela de login
+
+# Rota de Login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Adicione aqui a lógica de autenticação
+        # Se o login for bem-sucedido:
+        session['usuario'] = request.form['usuario']
+        flash('Login realizado com sucesso!', 'success')
+        return redirect(url_for('index'))
+
+    return render_template('login.html')  # Retorna o template de login
 
 # Executa o aplicativo Flask
 if __name__ == '__main__':
