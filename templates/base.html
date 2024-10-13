@@ -6,6 +6,7 @@
     <title>Controle de Estoque</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Link do Font Awesome -->
     <style>
         body {
             background-color: #f8f9fa;
@@ -26,7 +27,8 @@
             padding: 10px 15px;
             text-decoration: none;
             color: white;
-            display: block;
+            display: flex; /* Para alinhar ícone e texto */
+            align-items: center; /* Alinhamento vertical */
             transition: background-color 0.3s;
         }
 
@@ -47,8 +49,8 @@
         .dropdown-content a {
             color: white;
             padding: 10px 15px;
-            text-decoration: none;
-            display: block;
+            display: flex; /* Para alinhar ícone e texto */
+            align-items: center; /* Alinhamento vertical */
             transition: background-color 0.3s;
         }
 
@@ -78,25 +80,33 @@
 <body>
     <div class="sidebar">
         <img src="{{ url_for('static', filename='imagens/logo.png') }}" alt="Logo" class="logo">
-        <a href="/">Produtos</a>
+        <a href="/"><i class="fas fa-home"></i>&nbsp; Produtos</a>
         
         <div class="dropdown" id="estoqueDropdownParent">
-            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('estoqueDropdown', 'estoqueDropdownParent')">Estoque</a>
+            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('estoqueDropdown', 'estoqueDropdownParent')"><i class="fas fa-warehouse"></i>&nbsp; Estoque</a>
             <div id="estoqueDropdown" class="dropdown-content">
                 <a href="/estoque_vidros">Vidros e Espelhos</a>
                 <a href="/">Acessórios</a>
             </div>
         </div>
-
+    
         <div class="dropdown" id="adicionarDropdownParent">
-            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('adicionarDropdown', 'adicionarDropdownParent')">Adicionar</a>
+            <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('adicionarDropdown', 'adicionarDropdownParent')"><i class="fas fa-plus-circle"></i>&nbsp; Adicionar</a>
             <div id="adicionarDropdown" class="dropdown-content">
                 <a href="/adicionar_vidro">Vidros e Espelhos</a>
                 <a href="/adicionar">Acessórios</a>
             </div>
         </div>
+    
+        <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i>&nbsp; Sair</a>  <!-- Link de logout -->
+    </div>
+    
+    
+        <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i>&nbsp; Sair</a>  <!-- Link de logout -->
+    </div>
+    
 
-        <a href="{{ url_for('logout') }}" class="logout-btn">Sair</a>  <!-- Link de logout -->
+        <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>  <!-- Link de logout -->
     </div>
 
     <div class="content">
