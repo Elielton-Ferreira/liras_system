@@ -152,26 +152,6 @@ def estoque_vidros():
 
     return render_template('estoque_vidros.html', vidros=vidros_com_valores_totais)
 
-    # Criar uma lista para armazenar vidros com valores totais
-    vidros_com_valores_totais = []
-    
-    for vidro in vidros:
-        valor_total = vidro['preco_m2'] * vidro['area']  # Cálculo do valor total
-        # Criar um dicionário com os dados do vidro e o valor total
-        vidro_dict = {
-            'id': vidro['id'],
-            'nome': vidro['nome'],
-            'altura': vidro['altura'],
-            'largura': vidro['largura'],
-            'preco_m2': vidro['preco_m2'],
-            'area': vidro['area'],
-            'valor_total': valor_total
-        }
-        vidros_com_valores_totais.append(vidro_dict)  # Adicionar à lista
-
-    return render_template('estoque_vidros.html', vidros=vidros_com_valores_totais)
-
-
 # Rota para Editar Vidros
 @app.route('/editar_vidro/<int:id>', methods=['GET', 'POST'])
 def editar_vidro(id):
@@ -220,7 +200,6 @@ def excluir_vidro(id):
 
     flash('Vidro excluído com sucesso!', 'success')  # Mensagem de sucesso
     return redirect(url_for('estoque_vidros'))  # Redireciona de volta para a lista de vidros
-
 
 # Executa o aplicativo Flask
 if __name__ == '__main__':
