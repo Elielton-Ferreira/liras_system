@@ -28,6 +28,11 @@
                 <label for="valor_total">Valor Total (R$)</label>
                 <input type="text" class="form-control" id="valor_total" name="valor_total" readonly>
             </div>
+
+            <!-- Botão para voltar à página de estoque de vidros -->
+            <a href="{{ url_for('estoque_vidros') }}" class="btn btn-secondary">Voltar</a>
+
+            <!-- Botão para adicionar vidro -->
             <button type="submit" class="btn btn-primary">Adicionar Vidro</button>
         </form>
     </div>
@@ -37,16 +42,15 @@
             const altura = parseFloat(document.getElementById('altura').value) || 0;
             const largura = parseFloat(document.getElementById('largura').value) || 0;
             const preco_m2 = parseFloat(document.getElementById('preco_m2').value) || 0;
-    
+
             // Calcula a área
             const area = altura * largura;
             document.getElementById('area').value = area.toFixed(2); // Define o valor no campo de área
-    
+
             // Calcula o valor total
             const valor_total = area * preco_m2;
             document.getElementById('valor_total').value = valor_total.toFixed(2); // Define o valor no campo de valor total
             console.log("Altura:", altura, "Largura:", largura, "Preço por m²:", preco_m2, "Área:", area, "Valor Total:", valor_total);
         }
     </script>
-    
 {% endblock %}
