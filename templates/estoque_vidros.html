@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="my-4">Estoque Vidros Vidraçaria Lira's</h1>
+<h1 class="mb-4">Estoque Vidros e Espelhos</h1>
 
 <!-- Formulário de Pesquisa -->
 <form method="POST" class="form-inline mb-3">
@@ -9,47 +9,62 @@
     <button type="submit" class="btn btn-primary">Pesquisar</button>
 </form>
 
-<table class="table table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th>Nome</th>
-            <th>Altura (cm)</th>
-            <th>Largura (cm)</th>
-            <th>Preço por m² (R$)</th>
-            <th>Área (m²)</th>
-            <th>Valor Total (R$)</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for vidro in vidros %}
-        <tr>
-            <td>{{ vidro.nome }}</td>
-            <td>{{ vidro.altura }}</td>
-            <td>{{ vidro.largura }}</td>
-            <td>R$ {{ "%.2f"|format(vidro.preco_m2) }}</td>
-            <td>{{ "%.2f"|format(vidro.area) }}</td>
-            <td>R$ {{ "%.2f"|format(vidro.preco_m2 * vidro.area) }}</td>
-            <td>
-                <a href="{{ url_for('editar_vidro', id=vidro.id) }}" class="btn btn-sm btn-warning">Editar</a>
-                <form action="{{ url_for('excluir_vidro', id=vidro.id) }}" method="POST" style="display:inline;" id="delete-form-{{ vidro.id }}">
-                    <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ vidro.id }})">Excluir</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% if vidros %}
+    <!-- Cabeçalho responsivo -->
+    <div class="d-none d-md-flex font-weight-bold border-bottom pb-2 mb-2" style="font-size: 0.95rem;">
+        <div class="col-md-3">Nome</div>
+        <div class="col-md-1">Altura (cm)</div>
+        <div class="col-md-1">Largura (cm)</div>
+        <div class="col-md-2">Preço m² (R$)</div>
+        <div class="col-md-1">Área (m²)</div>
+        <div class="col-md-2">Valor Total (R$)</div>
+        <div class="col-md-2 text-right">Ações</div>
+    </div>
+
+    {% for vidro in vidros %}
+    <div class="row bg-light rounded shadow-sm mb-3 px-2 py-2 align-items-center">
+        <div class="col-12 col-md-3">
+            <strong class="d-md-none">Nome:</strong> {{ vidro.nome }}
+        </div>
+        <div class="col-12 col-md-1">
+            <strong class="d-md-none">Altura (cm):</strong> {{ vidro.altura }}
+        </div>
+        <div class="col-12 col-md-1">
+            <strong class="d-md-none">Largura (cm):</strong> {{ vidro.largura }}
+        </div>
+        <div class="col-12 col-md-2">
+            <strong class="d-md-none">Preço m²:</strong> R$ {{ "%.2f"|format(vidro.preco_m2) }}
+        </div>
+        <div class="col-12 col-md-1">
+            <strong class="d-md-none">Área (m²):</strong> {{ "%.2f"|format(vidro.area) }}
+        </div>
+        <div class="col-12 col-md-2 text-success font-weight-bold">
+            <strong class="d-md-none">Valor Total:</strong> R$ {{ "%.2f"|format(vidro.preco_m2 * vidro.area) }}
+        </div>
+        <div class="col-12 col-md-2 d-flex justify-content-md-end align-items-center mt-2 mt-md-0">
+            <a href="{{ url_for('editar_vidro', id=vidro.id) }}" class="btn btn-sm btn-warning mr-1" title="Editar">
+                <i class="fas fa-edit"></i>
+            </a>
+            <form action="{{ url_for('excluir_vidro', id=vidro.id) }}" method="POST" id="delete-form-{{ vidro.id }}" style="display:inline;">
+                <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ vidro.id }})" title="Excluir">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">Nenhum vidro encontrado.</p>
+{% endif %}
 
 <div class="mt-4">
-    <a href="/estoque_vidros" class="btn btn-secondary">Voltar</a> <!-- Botão Voltar -->
+    <a href="/estoque_vidros" class="btn btn-secondary">Voltar</a>
     <a href="/adicionar_vidro" class="btn btn-success">Adicionar Vidro</a>
 </div>
 
 <script>
     function confirmDelete(id) {
         if (confirm('Tem certeza que deseja excluir este vidro?')) {
-            // Envia o formulário de exclusão
             document.getElementById('delete-form-' + id).submit();
         }
     }

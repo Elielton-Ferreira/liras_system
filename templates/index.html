@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="my-4">Estoque Itens Vidraçaria Lira's</h1>
+<h1 class="my-4">Estoque Itens</h1>
 
 <!-- Formulário de Pesquisa -->
 <form method="POST" class="form-inline mb-3">
@@ -9,41 +9,56 @@
     <button type="submit" class="btn btn-primary">Pesquisar</button>
 </form>
 
-<table class="table table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Categoria</th>
-            <th>Quantidade</th>
-            <th>Preço</th>
-            <th>Estoque Mínimo</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for produto in produtos %}
-        <tr {% if produto[3] < produto[5] %}class="table-danger"{% endif %}>
-            <td>{{ produto[0] }}</td>
-            <td>{{ produto[1] }}</td>
-            <td>{{ produto[2] }}</td>
-            <td>{{ produto[3] }}</td>
-            <td>R$ {{ "%.2f"|format(produto[4]) }}</td>
-            <td>{{ produto[5] }}</td>
-            <td>
-                <a href="/editar/{{ produto[0] }}" class="btn btn-sm btn-warning">Editar Estoque</a>
-                <!-- Botão de Excluir com pop-up de confirmação -->
-                <form action="/excluir/{{ produto[0] }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este produto?');" style="display:inline;">
-                    <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% if produtos %}
+    <!-- Cabeçalho responsivo -->
+    <div class="d-none d-md-flex font-weight-bold border-bottom pb-2 mb-2" style="font-size: 0.95rem;">
+        <div class="col-md-1">ID</div>
+        <div class="col-md-3">Nome</div>
+        <div class="col-md-2">Categoria</div>
+        <div class="col-md-1">Qtd.</div>
+        <div class="col-md-2">Preço</div>
+        <div class="col-md-1">Estoque Min.</div>
+        <div class="col-md-2 text-right">Ações</div>
+    </div>
+
+    {% for produto in produtos %}
+    <div class="row {% if produto[3] < produto[5] %}bg-danger text-white{% else %}bg-light{% endif %} rounded shadow-sm mb-3 px-2 py-2 align-items-center">
+        <div class="col-12 col-md-1">
+            <strong class="d-md-none">ID:</strong> {{ produto[0] }}
+        </div>
+        <div class="col-12 col-md-3">
+            <strong class="d-md-none">Nome:</strong> {{ produto[1] }}
+        </div>
+        <div class="col-12 col-md-2">
+            <strong class="d-md-none">Categoria:</strong> {{ produto[2] }}
+        </div>
+        <div class="col-12 col-md-1">
+            <strong class="d-md-none">Qtd.:</strong> {{ produto[3] }}
+        </div>
+        <div class="col-12 col-md-2">
+            <strong class="d-md-none">Preço:</strong> R$ {{ "%.2f"|format(produto[4]) }}
+        </div>
+        <div class="col-12 col-md-1">
+            <strong class="d-md-none">Estoque Min.:</strong> {{ produto[5] }}
+        </div>
+        <div class="col-12 col-md-2 d-flex justify-content-md-end align-items-center mt-2 mt-md-0">
+            <a href="/editar/{{ produto[0] }}" class="btn btn-sm btn-warning mr-1" title="Editar Estoque">
+                <i class="fas fa-edit"></i>
+            </a>
+            <form action="/excluir/{{ produto[0] }}" method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este produto?');">
+                <button type="submit" class="btn btn-sm btn-danger" title="Excluir">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">Nenhum produto encontrado.</p>
+{% endif %}
 
 <div class="mt-4">
-    <a href="/" class="btn btn-secondary">Voltar</a> <!-- Botão Voltar -->
+    <a href="/" class="btn btn-secondary">Voltar</a>
     <a href="/adicionar" class="btn btn-success">Adicionar Produto</a>
 </div>
 {% endblock %}

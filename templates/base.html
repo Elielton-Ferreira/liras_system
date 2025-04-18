@@ -6,7 +6,7 @@
     <title>Controle de Estoque</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Link do Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -27,8 +27,8 @@
             padding: 10px 15px;
             text-decoration: none;
             color: white;
-            display: flex; /* Para alinhar ícone e texto */
-            align-items: center; /* Alinhamento vertical */
+            display: flex;
+            align-items: center;
             transition: background-color 0.3s;
         }
 
@@ -49,8 +49,8 @@
         .dropdown-content a {
             color: white;
             padding: 10px 15px;
-            display: flex; /* Para alinhar ícone e texto */
-            align-items: center; /* Alinhamento vertical */
+            display: flex;
+            align-items: center;
             transition: background-color 0.3s;
         }
 
@@ -73,7 +73,7 @@
         }
 
         .active .dropdown-content {
-            display: block; /* Mantém o dropdown visível se o pai tiver a classe active */
+            display: block;
         }
     </style>
 </head>
@@ -81,7 +81,7 @@
     <div class="sidebar">
         <img src="{{ url_for('static', filename='imagens/logo.png') }}" alt="Logo" class="logo">
         <a href="/"><i class="fas fa-home"></i>&nbsp; Produtos</a>
-        
+
         <div class="dropdown" id="estoqueDropdownParent">
             <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('estoqueDropdown', 'estoqueDropdownParent')"><i class="fas fa-warehouse"></i>&nbsp; Estoque</a>
             <div id="estoqueDropdown" class="dropdown-content">
@@ -89,7 +89,7 @@
                 <a href="/">Acessórios</a>
             </div>
         </div>
-    
+
         <div class="dropdown" id="adicionarDropdownParent">
             <a href="javascript:void(0);" class="dropbtn" onclick="toggleDropdown('adicionarDropdown', 'adicionarDropdownParent')"><i class="fas fa-plus-circle"></i>&nbsp; Adicionar</a>
             <div id="adicionarDropdown" class="dropdown-content">
@@ -98,22 +98,16 @@
             </div>
         </div>
 
-        <!-- Ícone do Instagram com mesmo estilo do botão "Adicionar" -->
+        <a href="/vendas"><i class="fas fa-shopping-cart"></i>&nbsp; Nova Venda</a>
+        <a href="/historico_vendas"><i class="fas fa-list"></i>&nbsp; Histórico de Vendas</a>
+
         <div class="dropdown">
-        <a href="https://www.instagram.com/vidracaria_liras/" target="_blank" class="dropbtn">
-            <i class="fab fa-instagram"></i>&nbsp; Instagram 
+            <a href="https://www.instagram.com/vidracaria_liras/" target="_blank" class="dropbtn">
+                <i class="fab fa-instagram"></i>&nbsp; Instagram 
             </a>
         </div>
-    
-        <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i>&nbsp; Sair</a>  <!-- Link de logout -->
-    </div>
-    
-    
-        <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i>&nbsp; Sair</a>  <!-- Link de logout -->
-    </div>
-    
 
-        <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>  <!-- Link de logout -->
+        <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i>&nbsp; Sair</a>
     </div>
 
     <div class="content">
@@ -122,7 +116,6 @@
         </div>
     </div>
 
-    <!-- Modal para exibir mensagens -->
     <div class="modal fade" id="mensagemModal" tabindex="-1" role="dialog" aria-labelledby="mensagemModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -152,9 +145,8 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
+
     <script>
-        // Verifica o estado dos dropdowns no localStorage ao carregar a página
         document.addEventListener('DOMContentLoaded', function() {
             const estoqueDropdownState = localStorage.getItem('estoqueDropdown');
             const adicionarDropdownState = localStorage.getItem('adicionarDropdown');
@@ -171,36 +163,32 @@
             const dropdown = document.getElementById(dropdownId);
             const parentDropdown = document.getElementById(parentId);
 
-            // Oculta todos os dropdowns
             document.querySelectorAll('.dropdown-content').forEach(function(content) {
                 if (content.id !== dropdownId) {
-                    content.style.display = 'none'; // Oculta dropdowns que não estão sendo clicados
-                    localStorage.setItem(content.id, 'false'); // Atualiza o estado para falso
+                    content.style.display = 'none';
+                    localStorage.setItem(content.id, 'false');
                 }
             });
             document.querySelectorAll('.dropdown').forEach(function(dropdown) {
-                dropdown.classList.remove('active'); // Remove a classe active de todos os dropdowns
+                dropdown.classList.remove('active');
             });
 
-            // Se o dropdown não estava visível, mostre-o e adicione a classe 'active'
             if (dropdown.style.display !== 'block') {
                 dropdown.style.display = 'block';
                 parentDropdown.classList.add('active');
-                localStorage.setItem(dropdownId, 'true'); // Atualiza o estado para verdadeiro
+                localStorage.setItem(dropdownId, 'true');
             } else {
-                dropdown.style.display = 'none'; // Se estava visível, oculta
-                localStorage.setItem(dropdownId, 'false'); // Atualiza o estado para falso
+                dropdown.style.display = 'none';
+                localStorage.setItem(dropdownId, 'false');
             }
         }
 
-        // Mostra o modal apenas se houver mensagens
         $(document).ready(function() {
             {% if get_flashed_messages() %}
                 $('#mensagemModal').modal('show');
             {% endif %}
         });
 
-        // Pop-ups de confirmação para ações de adicionar, editar e excluir
         function confirmarAcao(mensagem) {
             return confirm(mensagem);
         }

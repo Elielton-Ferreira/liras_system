@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
-from auth import auth  # Importa o Blueprint de autenticação
+from auth import auth  # Blueprint de autenticação
+from routes.vendas_routes import vendas_bp  # Novo: Blueprint de vendas
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Necessário para exibir mensagens flash
 
-# Registra o blueprint de autenticação
+# Registra os blueprints
 app.register_blueprint(auth)
+app.register_blueprint(vendas_bp)
 
 # Função para conectar ao banco de dados
 def conectar_bd():
@@ -48,7 +50,7 @@ def adicionar_produto():
         conn.commit()
         conn.close()
 
-        flash('Produto adicionado com sucesso!', 'success')  # Mensagem de sucesso
+        flash('Produto adicionado com sucesso!', 'success')
         return redirect(url_for('index'))
 
     return render_template('adicionar_produto.html')
@@ -85,7 +87,7 @@ def atualizar(id):
     conn.commit()
     conn.close()
 
-    flash('Produto atualizado com sucesso!', 'success')  # Mensagem de sucesso
+    flash('Produto atualizado com sucesso!', 'success')
     return redirect(url_for('index'))
 
 # Rota para adicionar um novo vidro
@@ -96,9 +98,8 @@ def adicionar_vidro():
         altura = float(request.form['altura'])
         largura = float(request.form['largura'])
         preco_m2 = float(request.form['preco_m2'])
-        area = altura * largura  # Área em m²
+        area = altura * largura
 
-        # Conectar ao banco de dados e inserir o vidro
         conn = conectar_bd()
         cursor = conn.cursor()
         cursor.execute("INSERT INTO vidros (nome, altura, largura, preco_m2, area) VALUES (?, ?, ?, ?, ?)",
@@ -106,7 +107,7 @@ def adicionar_vidro():
         conn.commit()
         conn.close()
 
-        flash(f'Vidro adicionado com sucesso! Área: {area:.2f} m²', 'success')  # Mensagem de sucesso
+        flash(f'Vidro adicionado com sucesso! Área: {area:.2f} m²', 'success')
         return redirect(url_for('adicionar_vidro'))
 
     return render_template('adicionar_vidro.html')
@@ -121,10 +122,10 @@ def excluir(id):
     conn.commit()
     conn.close()
 
-    flash('Produto excluído com sucesso!', 'success')  # Mensagem de sucesso
+    flash('Produto excluído com sucesso!', 'success')
     return redirect(url_for('index'))
 
-# Rota para consultar estoque vidros
+# Rota para consultar estoque de vidros
 @app.route('/estoque_vidros', methods=['GET', 'POST'])
 def estoque_vidros():
     conn = conectar_bd()
@@ -156,7 +157,7 @@ def estoque_vidros():
 
     return render_template('estoque_vidros.html', vidros=vidros_com_valores_totais)
 
-# Rota para Editar Vidros
+# Rota para editar vidros
 @app.route('/editar_vidro/<int:id>', methods=['GET', 'POST'])
 def editar_vidro(id):
     conn = conectar_bd()
@@ -173,10 +174,9 @@ def editar_vidro(id):
         altura = request.form['altura']
         largura = request.form['largura']
         preco_m2 = request.form['preco_m2']
-        
-        area = float(altura) * float(largura)  # Recalcula a área
 
-        # Atualiza os dados do vidro
+        area = float(altura) * float(largura)
+
         conn = conectar_bd()
         cursor = conn.cursor()
         cursor.execute(""" 
@@ -187,10 +187,10 @@ def editar_vidro(id):
         conn.commit()
         conn.close()
 
-        flash('Vidro atualizado com sucesso!', 'success')  # Mensagem de sucesso
+        flash('Vidro atualizado com sucesso!', 'success')
         return redirect(url_for('estoque_vidros'))
 
-    return render_template('editar_vidro.html', vidro=vidro)  # Renderiza a página de edição
+    return render_template('editar_vidro.html', vidro=vidro)
 
 # Rota para excluir um vidro
 @app.route('/excluir_vidro/<int:id>', methods=['POST'])
@@ -202,28 +202,26 @@ def excluir_vidro(id):
     conn.commit()
     conn.close()
 
-    flash('Vidro excluído com sucesso!', 'success')  # Mensagem de sucesso
-    return redirect(url_for('estoque_vidros'))  # Redireciona de volta para a lista de vidros
+    flash('Vidro excluído com sucesso!', 'success')
+    return redirect(url_for('estoque_vidros'))
 
 # Rota para fazer logout
 @app.route('/logout')
 def logout():
-    session.pop('usuario', None)  # Remove a sessão do usuário
-    flash('Você saiu com sucesso!', 'success')  # Mensagem de sucesso
-    return redirect(url_for('login'))  # Redireciona para a tela de login
+    session.pop('usuario', None)
+    flash('Você saiu com sucesso!', 'success')
+    return redirect(url_for('login'))
 
-# Rota de Login
+# Rota de login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Adicione aqui a lógica de autenticação
-        # Se o login for bem-sucedido:
         session['usuario'] = request.form['usuario']
         flash('Login realizado com sucesso!', 'success')
         return redirect(url_for('index'))
 
-    return render_template('login.html')  # Retorna o template de login
+    return render_template('login.html')
 
-# Executa o aplicativo Flask
+# Inicia o app Flask
 if __name__ == '__main__':
     app.run(debug=True)

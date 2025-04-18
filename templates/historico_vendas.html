@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Histórico de Vendas</h1>
+
+{% if vendas %}
+    <!-- Cabeçalho -->
+    <div class="d-none d-md-flex font-weight-bold border-bottom pb-2 mb-2" style="font-size: 0.95rem;">
+        <div class="col-md-2">Data</div>
+        <div class="col-md-2">Vendedor</div>
+        <div class="col-md-2">Cliente</div>
+        <div class="col-md-1">Total m²</div>
+        <div class="col-md-1">Valor m²</div>
+        <div class="col-md-2">Mão de Obra</div>
+        <div class="col-md-1">Total</div>
+        <div class="col-md-1 text-right">Ações</div> <!-- Nova coluna Ações -->
+    </div>
+
+    {% for venda in vendas %}
+    <div class="row bg-light rounded shadow-sm mb-3 px-2 py-2 align-items-center">
+        <div class="col-12 col-md-2">
+            <strong class="d-md-none">Data:</strong> {{ venda.data }}
+        </div>
+        <div class="col-12 col-md-2">
+            <strong class="d-md-none">Vendedor:</strong> {{ venda.vendedor or '-' }}
+        </div>
+        <div class="col-12 col-md-2">
+            <strong class="d-md-none">Cliente:</strong> {{ venda.cliente or '-' }}
+        </div>
+        <div class="col-12 col-md-1">
+            <strong class="d-md-none">Total m²:</strong> {{ '%.2f'|format(venda.total_area) }}
+        </div>
+        <div class="col-12 col-md-1">
+            <strong class="d-md-none">Valor m²:</strong> R$ {{ '%.2f'|format(venda.total_m2) }}
+        </div>
+        <div class="col-12 col-md-2">
+            <strong class="d-md-none">Mão de Obra:</strong> R$ {{ '%.2f'|format(venda.mao_obra) }}
+        </div>
+        <div class="col-12 col-md-1 text-success font-weight-bold">
+            <strong class="d-md-none">Total:</strong> R$ {{ '%.2f'|format(venda.total_geral) }}
+        </div>
+
+        <!-- Nova coluna Ações com botões alinhados corretamente -->
+        <div class="col-12 col-md-1 d-flex justify-content-md-end align-items-center mt-2 mt-md-0">
+            <a href="{{ url_for('vendas.editar_venda', venda_id=venda.id) }}" class="btn btn-sm btn-warning mr-1" title="Editar">
+                <i class="fas fa-edit"></i>
+            </a>
+            <form action="{{ url_for('vendas.excluir_venda', venda_id=venda.id) }}" method="POST" id="delete-form-{{ venda.id }}" style="display: inline;">
+                <button type="button" class="btn btn-sm btn-danger" title="Excluir" onclick="confirmDelete({{ venda.id }})">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+
+{% else %}
+    <p class="text-muted">Nenhuma venda registrada ainda.</p>
+{% endif %}
+
+<script>
+function confirmDelete(id) {
+    if (confirm('Tem certeza que deseja excluir esta venda?')) {
+        document.getElementById('delete-form-' + id).submit();
+    }
+}
+</script>
+
+{% endblock %}

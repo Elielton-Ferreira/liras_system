@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Nova Venda</h1>
+
+<form method="POST" id="form-venda">
+    <div class="form-group">
+        <label>Cliente:</label>
+        <input type="text" name="cliente" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label>Vendedor:</label>
+        <input type="text" name="vendedor" class="form-control" required>
+    </div>
+
+    <h4>Itens (Vidros/Espelhos)</h4>
+    <div id="itens-container">
+        <!-- Itens adicionados dinamicamente -->
+    </div>
+
+    <button type="button" class="btn btn-secondary mb-3" onclick="adicionarItem()">+ Item</button>
+
+    <div class="form-group">
+        <label for="mao_obra">Mão de Obra (R$)</label>
+        <input type="number" name="mao_obra" class="form-control" step="0.01">
+    </div>
+
+    <button type="submit" class="btn btn-success">Finalizar Venda</button>
+</form>
+
+<script>
+let index = 1;
+
+function adicionarItem() {
+    const container = document.getElementById('itens-container');
+
+    const div = document.createElement('div');
+    div.classList.add('card', 'p-3', 'mb-3');
+    div.id = `item_${index}`;
+    div.innerHTML = `
+        <div class="form-row align-items-end">
+            <div class="form-group col-md-4">
+                <label>Produto</label>
+                <select name="vidro_id_${index}" class="form-control" onchange="atualizarPreco(${index})">
+                    <option value="">Selecione</option>
+                    {% for vidro in vidros %}
+                    <option value="{{ vidro.id }}" data-preco="{{ vidro.preco_m2 }}">{{ vidro.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <label>Altura (cm)</label>
+                <input type="number" name="altura_${index}" class="form-control" step="0.01" oninput="calcularArea(${index})">
+            </div>
+            <div class="form-group col-md-2">
+                <label>Largura (cm)</label>
+                <input type="number" name="largura_${index}" class="form-control" step="0.01" oninput="calcularArea(${index})">
+            </div>
+            <div class="form-group col-md-2">
+                <label>Área (m²)</label>
+                <input type="number" name="quantidade_${index}" id="area_${index}" class="form-control" readonly>
+            </div>
+            <div class="form-group col-md-1">
+                <label>Preço/m²</label>
+                <input type="number" name="preco_m2_${index}" id="preco_${index}" class="form-control" readonly>
+            </div>
+            <div class="form-group col-md-1 text-right">
+                <button type="button" class="btn btn-danger" onclick="removerItem(${index})">-</button>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(div);
+    index++;
+}
+
+function removerItem(idx) {
+    const item = document.getElementById(`item_${idx}`);
+    if (item) {
+        item.remove();
+    }
+}
+
+function calcularArea(index) {
+    const altura = parseFloat(document.querySelector(`[name="altura_${index}"]`)?.value || 0);
+    const largura = parseFloat(document.querySelector(`[name="largura_${index}"]`)?.value || 0);
+    const area = (altura * largura) / 10000;
+    document.getElementById(`area_${index}`).value = area.toFixed(4);
+}
+
+function atualizarPreco(index) {
+    const select = document.querySelector(`[name="vidro_id_${index}"]`);
+    const preco = select.options[select.selectedIndex].getAttribute('data-preco');
+    document.getElementById(`preco_${index}`).value = preco;
+}
+
+window.onload = () => {
+    adicionarItem();
+};
+</script>
+{% endblock %}
